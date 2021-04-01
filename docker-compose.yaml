@@ -1,0 +1,68 @@
+version: '3.8'
+
+x-app-service: &default-app
+  build: .
+  command: ''
+  environment:
+    - MONGO_URL=mongodb://mongo:27017/dev
+  depends_on:
+    - mongo
+    - kibana
+    - elasticsearch
+  volumes:
+    - .:/code:delegated
+    - node_modules:/code/node_modules:delegated
+
+services:
+  app:
+    <<: *default-app
+
+  financial:
+    <<: *default-app
+    command: bash -c "npm run build && npm run start:financial"
+    ports:
+      - 3000:3000
+
+  mongo:
+    image: mongo:3.4.6
+    volumes:
+      - ./data/mongo:/data/db:delegated
+    ports:
+      - 27017:27017
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+    container_name: alesquare-elasticsearch
+    environment:
+      - node.name=alesquare-elasticsearch
+      - discovery.type=single-node #Elasticsearch forms a single-node cluster
+      - bootstrap.memory_lock=true # might cause the JVM or shell session to exit if it tries to allocate more memory than is available!
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    ulimits:
+      memlock:
+        soft: -1 # The memlock soft and hard values configures the range of memory that ElasticSearch will use. Setting this to –1 means unlimited.
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.8.1
+    container_name: alesquare-kibana
+    environment:
+      ELASTICSEARCH_URL: http://alesquare-elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://alesquare-elasticsearch:9200
+    ports:
+      - 5601:5601
+
+  rabbitmq:
+    image: 'rabbitmq:3.8-management'
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+volumes:
+  node_modules:
+  esdata:
+    driver: local

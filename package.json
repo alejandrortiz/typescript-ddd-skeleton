@@ -1,0 +1,63 @@
+{
+  "name": "typescript-ddd-skeleton",
+  "version": "1.0.0",
+  "description": "Node Typescript DDD skeleton project",
+  "main": "src/app/public/index.js",
+  "author": "Alejandro Ortiz",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.11",
+    "@types/helmet": "^4.0.0",
+    "@types/node": "^14.14.37",
+    "@types/uuid": "^8.3.0",
+    "@types/uuid-validate": "0.0.1",
+    "awilix": "^4.3.3",
+    "awilix-express": "^4.0.0",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "glob": "^7.1.6",
+    "helmet": "^4.4.1",
+    "http-status": "^1.5.0",
+    "mongodb": "^3.6.5",
+    "node-dependency-injection": "^2.6.11",
+    "uuid": "^8.3.2",
+    "uuid-validate": "0.0.3",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.14",
+    "@babel/plugin-proposal-decorators": "^7.13.5",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@types/compression": "^1.7.0",
+    "@types/errorhandler": "^1.5.0",
+    "@types/mongodb": "^3.6.11",
+    "tsconfig-paths-webpack-plugin": "^3.5.1",
+    "typescript": "^4.2.3",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-node-externals": "^2.5.2"
+  },
+  "files": [
+    "dist/**/*.{js,ts,tsbuildinfo}",
+    "docs/**/*.*"
+  ],
+  "scripts": {
+    "dev:mooc:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/mooc/backend/start.ts",
+    "dev:backoffice:frontend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules ./src/apps/backoffice/frontend/start.ts",
+    "dev:backoffice:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules ./src/apps/backoffice/backend/start.ts",
+    "test": "npm run test:unit && npm run test:features",
+    "test:unit": "NODE_ENV=test jest",
+    "test:features": "npm run test:mooc:backend:features && npm run test:backoffice:backend:features",
+    "test:mooc:backend:features": "NODE_ENV=test cucumber-js -p mooc_backend",
+    "test:backoffice:backend:features": "NODE_ENV=test cucumber-js -p backoffice_backend",
+    "lint": "tslint src/**/*.ts{,x}",
+    "start:financial": "NODE_ENV=production node dist/src/app/public/index",
+    "build": "npm run build:clean && npm run build:tsc",
+    "build:tsc": "tsc -p tsconfig.prod.json",
+    "build:clean": "rm -r dist; exit 0"
+  }
+}

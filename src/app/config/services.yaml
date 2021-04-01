@@ -1,0 +1,33 @@
+---
+services:
+  Shared.MongoConfig:
+    factory:
+      class: ../../main/financial/shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+    arguments: []
+
+  Shared.ConnectionManager:
+    factory:
+      class: ../../main/shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['mooc', '@Shared.MongoConfig']
+
+  Shared.Logger:
+    class: ../../main/shared/infrastructure/logger/WinstonLogger
+    arguments: []
+
+  Shared.CommandHandlersInformation:
+    class: ../../main/shared/infrastructure/bus/command/CommandHandlersInformation
+    arguments: ['!tagged commandHandler']
+
+  Shared.CommandBus:
+    class: ../../main/shared/infrastructure/bus/command/InMemoryCommandBus
+    arguments: ['@Shared.CommandHandlersInformation']
+
+  Shared.QueryHandlersInformation:
+    class: ../../main/shared/infrastructure/bus/query/QueryHandlersInformation
+    arguments: ['!tagged queryHandler']
+
+  Shared.QueryBus:
+    class: ../../main/shared/infrastructure/bus/query/InMemoryQueryBus
+    arguments: ['@Shared.QueryHandlersInformation']

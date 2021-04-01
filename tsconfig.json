@@ -1,0 +1,31 @@
+{
+    "include": [
+        "src/**/**.*s"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "compilerOptions": {
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "target": "es6",
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "rootDir": ".",
+        "strict": true,
+        "noEmit": false,
+        "resolveJsonModule": true,
+        "noUnusedLocals": true,
+        "outDir": "./dist",
+        "typeRoots": [
+            "./node_modules/@types"
+        ],
+        "types": [
+            "node"
+        ],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "allowSyntheticDefaultImports": true
+    }
+}
