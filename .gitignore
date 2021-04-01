@@ -1,5 +1,7 @@
 .idea/
 
 node_modules/
+dist/
+data/
 
 package-lock.json
