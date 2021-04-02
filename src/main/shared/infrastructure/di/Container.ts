@@ -1,34 +1,13 @@
-import {ContainerBuilder, YamlFileLoader} from "node-dependency-injection";
+import {ContainerBuilder} from "node-dependency-injection";
 
 export class Container {
-    private static inst: Container | null;
-    container: ContainerBuilder;
+    static instance: Container;
 
-    constructor() {
-        this.container = new ContainerBuilder();
-        const loader = new YamlFileLoader(this.container);
-        const env = process.env.ENV || 'dev';
-
-        loader.load(`${__dirname}/services_${env}.yaml`);
-    }
-
-    public static instance(): Container {
-        if (null === this.inst) {
-            this.inst = new Container();
-        }
-
-        return this.inst;
+    constructor(private builder: ContainerBuilder) {
+        Container.instance = this;
     }
 
     public get(key: string) {
-        return this.container.get(key);
-    }
-
-    public set(key: string, value: any) {
-        this.container.set(key, value);
-    }
-
-    public remove(key: string) {
-        this.container.remove(key);
+        return this.builder.get(key);
     }
 }

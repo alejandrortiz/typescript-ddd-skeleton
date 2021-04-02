@@ -1,24 +1,19 @@
 import {MongoClient} from "mongodb";
 import {MongoConfig} from "./MongoConfig";
-import {Nullable} from "../../domain/Null";
 
 export class MongoClientFactory {
-    private static clients: { [key: string]: MongoClient } = {};
+    private static client: MongoClient;
 
-    static async createClient(contextName: string, config: MongoConfig): Promise<MongoClient> {
-        let client = MongoClientFactory.getClient(contextName);
+    static async createClient(config: MongoConfig): Promise<MongoClient> {
+        let client = MongoClientFactory.client;
 
         if (!client) {
             client = await MongoClientFactory.createAndConnectClient(config);
 
-            MongoClientFactory.registerClient(client, contextName);
+            MongoClientFactory.client = client;
         }
 
         return client;
-    }
-
-    private static getClient(contextName: string): Nullable<MongoClient> {
-        return MongoClientFactory.clients[contextName];
     }
 
     private static async createAndConnectClient(config: MongoConfig): Promise<MongoClient> {
@@ -27,9 +22,5 @@ export class MongoClientFactory {
         await client.connect();
 
         return client;
-    }
-
-    private static registerClient(client: MongoClient, contextName: string): void {
-        MongoClientFactory.clients[contextName] = client;
     }
 }

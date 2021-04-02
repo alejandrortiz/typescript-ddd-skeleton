@@ -7,6 +7,7 @@ import errorHandler from "errorhandler";
 import httpStatus from "http-status";
 import {Container} from "../di/Container";
 import {Logger} from "../../domain/Logger";
+import {Nullable} from "../../domain/Null";
 
 export abstract class Kernel {
     private server: express.Express;
@@ -14,7 +15,9 @@ export abstract class Kernel {
     protected readonly environment: string;
     protected readonly port: string;
 
-    private _httpServer: http.Server | null;
+    private _httpServer: Nullable<http.Server>;
+    private container: Container;
+
     private logger: Logger;
 
     constructor(environment: string, port: string) {
@@ -22,7 +25,6 @@ export abstract class Kernel {
         this.port = port;
 
         this._httpServer = null;
-        this.logger = Container.instance().get('logger');
 
         // Express application
         this.server = express();
@@ -36,8 +38,10 @@ export abstract class Kernel {
         this.server.use(helmet.noSniff());
         this.server.use(helmet.hidePoweredBy());
         this.server.use(helmet.frameguard({action: 'deny'}));
+
         // Container configuration
-        this.configureContainer();
+        this.container = this.configureContainer();
+
         // Routes configuration
         const router = Router();
         router.use(errorHandler());
@@ -48,11 +52,13 @@ export abstract class Kernel {
             this.logger.error(error.message);
             response.status(httpStatus.INTERNAL_SERVER_ERROR).send(error.message);
         });
+
+        this.logger = this.container.get('Shared.Logger');
     }
 
     protected abstract configureRoutes(router: Router): void;
 
-    protected abstract configureContainer(): void;
+    protected abstract configureContainer(): Container;
 
     async start() {
         return this.listen();
@@ -84,7 +90,7 @@ export abstract class Kernel {
         }));
     }
 
-    get httpServer(): http.Server | null {
+    get httpServer(): Nullable<http.Server> {
         return this._httpServer;
     }
 }

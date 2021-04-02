@@ -1,0 +1,26 @@
+---
+services:
+
+  Financial.accounts.AccountRepository:
+    class: ../../../accounts/infrastructure/persistence/MongoAccountRepository
+    arguments: ['@Shared.ConnectionManager']
+
+  Financial.accounts.AccountCreator:
+    class: ../../../accounts/application/create/AccountCreator
+    arguments: ['@Financial.accounts.AccountRepository']
+
+  Financial.accounts.CreateAccountCommandHandler:
+    class: ../../../accounts/application/create/CreateAccountCommandHandler
+    arguments: ['@Financial.accounts.AccountCreator']
+    tags:
+      - {name: 'commandHandler'}
+
+  Financial.accounts.AccountFinder:
+    class: ../../../accounts/application/find/AccountFinder
+    arguments: ['@Financial.accounts.AccountRepository']
+
+  Financial.accounts.FindAccountQueryHandler:
+    class: ../../../accounts/application/find/FindAccountQueryHandler
+    arguments: ['@Financial.accounts.AccountFinder']
+    tags:
+      - {name: 'queryHandler'}

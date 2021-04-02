@@ -1,23 +1,37 @@
 ---
+imports:
+  - {resource: ../../main/financial/shared/infrastructure/di/services.yaml}
+
 services:
+  App.controller.HealthCheckGetController:
+    class: ../controller/health-check/HealthCheckGetController
+    arguments: []
+
+  App.controller.AccountPutController:
+    class: ../controller/account/AccountPutController
+    arguments: ["@Shared.CommandBus"]
+
+  App.controller.AccountGetController:
+    class: ../controller/account/AccountGetController
+    arguments: ["@Shared.QueryBus"]
+
   Shared.MongoConfig:
     factory:
-      class: ../../main/financial/shared/infrastructure/persistence/mongo/MongoConfigFactory
+      class: ../../main/shared/infrastructure/mongo/MongoConfigFactory
       method: 'createConfig'
-    arguments: []
 
   Shared.ConnectionManager:
     factory:
-      class: ../../main/shared/infrastructure/persistence/mongo/MongoClientFactory
+      class: ../../main/shared/infrastructure/mongo/MongoClientFactory
       method: 'createClient'
-    arguments: ['mooc', '@Shared.MongoConfig']
+    arguments: ['@Shared.MongoConfig']
 
   Shared.Logger:
     class: ../../main/shared/infrastructure/logger/WinstonLogger
     arguments: []
 
   Shared.CommandHandlersInformation:
-    class: ../../main/shared/infrastructure/bus/command/CommandHandlersInformation
+    class: ../../main/shared/infrastructure/bus/command/CommandHandlers
     arguments: ['!tagged commandHandler']
 
   Shared.CommandBus:
@@ -25,7 +39,7 @@ services:
     arguments: ['@Shared.CommandHandlersInformation']
 
   Shared.QueryHandlersInformation:
-    class: ../../main/shared/infrastructure/bus/query/QueryHandlersInformation
+    class: ../../main/shared/infrastructure/bus/query/QueryHandlers
     arguments: ['!tagged queryHandler']
 
   Shared.QueryBus:
