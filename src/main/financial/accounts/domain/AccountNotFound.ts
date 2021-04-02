@@ -2,12 +2,10 @@ import {DomainError} from "../../../shared/domain/DomainError";
 import {AccountId} from "./AccountId";
 
 export class AccountNotFound extends DomainError {
-    private readonly _id: AccountId;
-
-    constructor(id: AccountId) {
+    constructor(private readonly id: AccountId) {
         super();
 
-        this._id = id;
+        this.message = this.errorMessage();
     }
 
     errorCode(): string {
@@ -15,7 +13,6 @@ export class AccountNotFound extends DomainError {
     }
 
     errorMessage(): string {
-        return `The account <${this._id.value}> is not found`;
+        return `The account <${this.id.value}> is not found`;
     }
-
 }
