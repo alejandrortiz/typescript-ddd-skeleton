@@ -4,7 +4,6 @@ x-app-service: &default-app
   build: .
   command: ''
   environment:
-    - ENV=dev
     - MONGO_URL=mongodb://mongo:27017/financial
   depends_on:
     - mongo

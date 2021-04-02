@@ -42,4 +42,4 @@ start_database:
 	docker-compose up -d mongo elasticsearch rabbitmq
 
 clean-files:
-	sudo rm -Rf dist data
+	sudo rm -Rf dist data logs
