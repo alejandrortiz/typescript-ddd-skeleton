@@ -1,9 +1,9 @@
 import {Request, Response} from "express";
 import * as httpStatus from "http-status";
-import {ApiController} from "../../../main/shared/infrastructure/express/ApiController";
-import {CommandBus} from "../../../main/shared/domain/bus/command/CommandBus";
-import {CreateAccountCommand} from "../../../main/financial/accounts/application/create/CreateAccountCommand";
-import {DomainError} from "../../../main/shared/domain/DomainError";
+import {ApiController} from "../../../../main/shared/infrastructure/express/ApiController";
+import {CommandBus} from "../../../../main/shared/domain/bus/command/CommandBus";
+import {CreateAccountCommand} from "../../../../main/financial/accounts/application/create/CreateAccountCommand";
+import {DomainError} from "../../../../main/shared/domain/DomainError";
 
 export class AccountPutController implements ApiController {
     constructor(private commandBus: CommandBus) {

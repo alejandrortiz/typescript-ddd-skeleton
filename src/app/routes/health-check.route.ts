@@ -1,9 +1,9 @@
 import {Request, Response, Router} from "express";
-import {Container} from "../../main/shared/infrastructure/di/Container";
+import {DiContainer} from "../../main/shared/infrastructure/di/DiContainer";
 
 export const register = (router: Router) => {
     router.get('/api/health-check', ((req: Request, res: Response) => {
-        const controller = Container.instance.get('App.controller.HealthCheckGetController');
+        const controller = DiContainer.instance.get('App.controller.HealthCheckGetController');
 
         return controller.handle(req, res);
     }))

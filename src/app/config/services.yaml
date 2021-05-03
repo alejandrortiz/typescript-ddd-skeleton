@@ -8,11 +8,11 @@ services:
     arguments: []
 
   App.controller.AccountPutController:
-    class: ../controller/account/AccountPutController
+    class: ../controller/financial/account/AccountPutController
     arguments: ["@Shared.CommandBus"]
 
   App.controller.AccountGetController:
-    class: ../controller/account/AccountGetController
+    class: ../controller/financial/account/AccountGetController
     arguments: ["@Shared.QueryBus"]
 
   Shared.MongoConfig:

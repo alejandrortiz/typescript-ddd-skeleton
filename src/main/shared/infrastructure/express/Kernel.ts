@@ -5,25 +5,19 @@ import * as http from 'http';
 import helmet from "helmet";
 import errorHandler from "errorhandler";
 import httpStatus from "http-status";
-import {Container} from "../di/Container";
+import {DiContainer} from "../di/DiContainer";
 import {Logger} from "../../domain/Logger";
 import {Nullable} from "../../domain/Null";
 
 export abstract class Kernel {
     private server: express.Express;
 
-    protected readonly environment: string;
-    protected readonly port: string;
-
     private _httpServer: Nullable<http.Server>;
-    private container: Container;
+    private container: DiContainer;
 
     private logger: Logger;
 
-    constructor(environment: string, port: string) {
-        this.environment = environment;
-        this.port = port;
-
+    constructor(protected readonly _env: string, protected readonly _port: string) {
         this._httpServer = null;
 
         // Express application
@@ -58,7 +52,7 @@ export abstract class Kernel {
 
     protected abstract configureRoutes(router: Router): void;
 
-    protected abstract configureContainer(): Container;
+    protected abstract configureContainer(): DiContainer;
 
     async start() {
         return this.listen();
@@ -67,7 +61,7 @@ export abstract class Kernel {
     private async listen(): Promise<void> {
         return new Promise(resolve => {
             this._httpServer = this.server.listen(this.port, () => {
-                this.logger.info(`Application is running at http://localhost:${this.port} in ${this.environment} mode`);
+                this.logger.info(`Application is running at http://localhost:${this._port} in ${this._env} mode`);
                 this.logger.info('  Press CTRL-C to stop\n');
                 resolve();
             })
@@ -92,5 +86,9 @@ export abstract class Kernel {
 
     get httpServer(): Nullable<http.Server> {
         return this._httpServer;
+    }
+
+    public port(): string {
+        return this._port;
     }
 }

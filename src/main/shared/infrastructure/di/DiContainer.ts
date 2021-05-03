@@ -1,10 +1,10 @@
 import {ContainerBuilder} from "node-dependency-injection";
 
-export class Container {
-    static instance: Container;
+export class DiContainer {
+    static instance: DiContainer;
 
     constructor(private builder: ContainerBuilder) {
-        Container.instance = this;
+        DiContainer.instance = this;
     }
 
     public get(key: string) {
