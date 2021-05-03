@@ -1,0 +1,22 @@
+services:
+  App.controller.HealthCheckGetController:
+    class: ../controller/health-check/HealthCheckGetController
+    arguments: []
+
+  # -- ACCOUNT
+  App.controller.AccountPutController:
+    class: ../controller/financial/accounts/AccountPutController
+    arguments: ["@Shared.CommandBus"]
+
+  App.controller.AccountGetController:
+    class: ../controller/financial/accounts/AccountGetController
+    arguments: ["@Shared.QueryBus"]
+
+  # -- RECORD
+  App.controller.RecordPutController:
+    class: ../controller/financial/records/RecordPutController
+    arguments: ["@Shared.CommandBus"]
+
+  App.controller.RecordGetController:
+    class: ../controller/financial/records/RecordGetController
+    arguments: ["@Shared.QueryBus"]

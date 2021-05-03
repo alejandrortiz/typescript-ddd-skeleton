@@ -1,20 +1,9 @@
 ---
 imports:
+  - {resource: ./controllers.yaml}
   - {resource: ../../main/financial/shared/infrastructure/di/services.yaml}
 
 services:
-  App.controller.HealthCheckGetController:
-    class: ../controller/health-check/HealthCheckGetController
-    arguments: []
-
-  App.controller.AccountPutController:
-    class: ../controller/financial/account/AccountPutController
-    arguments: ["@Shared.CommandBus"]
-
-  App.controller.AccountGetController:
-    class: ../controller/financial/account/AccountGetController
-    arguments: ["@Shared.QueryBus"]
-
   Shared.MongoConfig:
     factory:
       class: ../../main/shared/infrastructure/mongo/MongoConfigFactory
@@ -25,6 +14,17 @@ services:
       class: ../../main/shared/infrastructure/mongo/MongoClientFactory
       method: 'createClient'
     arguments: ['@Shared.MongoConfig']
+
+  Shared.SequelizeConfig:
+    factory:
+      class: ../../../main/shared/infrastructure/sequelize/SequelizeConfigFactory
+      method: 'createConfig'
+
+  Shared.SequelizeConnectionManager:
+    factory:
+      class: ../../../main/shared/infrastructure/sequelize/SequelizeClientFactory
+      method: 'createClient'
+    arguments: ['@Shared.SequelizeConfig']
 
   Shared.Logger:
     class: ../../main/shared/infrastructure/logger/WinstonLogger

@@ -1,8 +1,8 @@
 import {Nullable} from "../../../../shared/domain/Null";
 import {MongoRepository} from "../../../../shared/infrastructure/persistence/mongo/MongoRepository";
 import {Account} from "../../domain/Account";
-import {AccountId} from "../../domain/AccountId";
 import {AccountRepository} from "../../domain/AccountRepository";
+import {AccountId} from "../../../shared/domain/account/AccountId";
 
 export class MongoAccountRepository extends MongoRepository<Account> implements AccountRepository {
     public async search(id: AccountId): Promise<Nullable<Account>> {

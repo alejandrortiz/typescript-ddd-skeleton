@@ -44,7 +44,13 @@ export abstract class Kernel {
 
         router.use((error: Error, request: Request, response: Response, next: Function) => {
             this.logger.error(error.message);
-            response.status(httpStatus.INTERNAL_SERVER_ERROR).send(error.message);
+
+            response.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+                error: {
+                    message: error.message,
+                    stack: error.stack
+                }
+            });
         });
 
         this.logger = this.container.get('Shared.Logger');

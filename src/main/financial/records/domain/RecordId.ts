@@ -1,4 +1,4 @@
 import {Uuid} from "../../../shared/domain/value-object/Uuid";
 
-export class AccountId extends Uuid {
+export class RecordId extends Uuid {
 }

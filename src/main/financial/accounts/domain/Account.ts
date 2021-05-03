@@ -1,6 +1,6 @@
-import {AccountId} from "./AccountId";
 import {AccountName} from "./AccountName";
 import {AggregateRoot} from "../../../shared/domain/aggregate/AggregateRoot";
+import {AccountId} from "../../shared/domain/account/AccountId";
 
 export class Account extends AggregateRoot {
     constructor(readonly id: AccountId, readonly name: AccountName) {

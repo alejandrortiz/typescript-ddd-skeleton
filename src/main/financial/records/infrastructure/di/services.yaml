@@ -1,0 +1,27 @@
+---
+services:
+  # -- REPOSITORY
+  Financial.records.RecordRepository:
+    class: ../persistence/SequelizeRecordRepository
+    arguments: ['@Shared.SequelizeConnectionManager']
+
+  # -- APPLICATION SERVICES
+  Financial.records.RecordCreator:
+    class: ../../application/create/RecordCreator
+    arguments: ['@Financial.records.RecordRepository']
+
+  Financial.records.CreateRecordCommandHandler:
+    class: ../../application/create/CreateRecordCommandHandler
+    arguments: ['@Financial.records.RecordCreator']
+    tags:
+      - {name: 'commandHandler'}
+
+  Financial.records.RecordFinder:
+    class: ../../application/find/RecordFinder
+    arguments: ['@Financial.records.RecordRepository']
+
+  Financial.records.FindRecordQueryHandler:
+    class: ../../application/find/FindRecordQueryHandler
+    arguments: ['@Financial.records.RecordFinder']
+    tags:
+      - {name: 'queryHandler'}

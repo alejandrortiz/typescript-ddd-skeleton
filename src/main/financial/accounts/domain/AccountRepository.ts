@@ -1,6 +1,6 @@
 import {Account} from "./Account";
-import {AccountId} from "./AccountId";
 import {Nullable} from "../../../shared/domain/Null";
+import {AccountId} from "../../shared/domain/account/AccountId";
 
 export interface AccountRepository {
     save(account: Account): Promise<void>;
